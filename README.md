@@ -9,6 +9,10 @@ what it does
 - Removes user policies
 - Removes user
 
+how its done
+ - Using default profile of transit account
+ - Using a transit account to assume role to each of the target accounts in JSON 
+
 Script uses a JSON file with AWS Account numbers as bellow, you can modify it and build other logic if needed.
 
 {
