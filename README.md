@@ -1,4 +1,4 @@
-# aws_cleanup_groups_and_users
+# Cleanup IAM Users and Groups in AWS
 Python script to remove AWS Groups and Users attached to them
 
 what it does
