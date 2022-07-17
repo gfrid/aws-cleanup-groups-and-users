@@ -11,7 +11,7 @@ for i in data['accounts']:
     try:
         sts_client = boto3.client('sts')
         assumed_role_object=sts_client.assume_role(
-            RoleArn="arn:aws:iam::" + i + ":role/IT_Automation",
+            RoleArn="arn:aws:iam::" + i + ":role/Automat",
             RoleSessionName="AssumeRoleSession"
         )
         print(assumed_role_object)
@@ -23,18 +23,15 @@ for i in data['accounts']:
             aws_secret_access_key=credentials['SecretAccessKey'],
             aws_session_token=credentials['SessionToken'],
         )
-    except Exception as eee:
-        print(eee)
+    except Exception as e:
+        print(e)
         continue
-
-    #iam = boto3.client('iam')
 
     print("starting cleanup in account: " + i)
     response = iam.list_groups()
     for group in response['Groups']:
         group_details = iam.get_group(GroupName=group['GroupName'])
         for user in group_details['Users']:
-            #print(" - ", user['UserName'])
             if "test" in group['GroupName']:
                 test_users = (user['UserName'])
                 test_group = (group['GroupName'])
@@ -64,7 +61,7 @@ for i in data['accounts']:
                                 PolicyArn=arn,
                         )
                     except Exception as eee:
-                        print(eee)
+                        print(e)
                         continue
                     print(response_remove_polices)
             try:
@@ -72,8 +69,8 @@ for i in data['accounts']:
                     GroupName=test_group
                 )
                 print(response_delete_group)
-            except Exception as eee:
-                print(eee)
+            except Exception as e:
+                print(e)
                 continue
 
 
@@ -104,8 +101,8 @@ for i in data['accounts']:
                      if 'AccessKeyId' in key:
                          access_key_id = key['AccessKeyId']
                          list_access_keys_to_remove.append(access_key_id)
-            except Exception as eee:
-                print(eee)
+            except Exception as e:
+                print(e)
                 print("An error occurred while listing access keys")
             try:
                 for access_key_id in list_access_keys_to_remove:
@@ -115,14 +112,14 @@ for i in data['accounts']:
                         AccessKeyId=access_key_id
                     )
                     print(response_delete_keys)
-            except Exception as eee:
-                print(eee)
+            except Exception as e:
+                print(e)
                 print("something_went_wrong " + test_user)
             try:
                 response_delete_iam_user = iam.delete_user(
                     UserName=test_user
                 )
                 print(response_delete_iam_user)
-            except Exception as eee:
-                print(eee)
+            except Exception as e:
+                print(e)
                 continue
